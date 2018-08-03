@@ -6,6 +6,7 @@ class Pledges extends CI_Controller {
 	{    	
 		parent::__construct();
 		$this->load->library('Session');
+		(!$this->session->userdata('userid')) ? redirect("account/login") : '' ;
 
 	}
 

@@ -29,7 +29,6 @@
 
 			$response = $this->sendRequest($resource,'POST',$payload);
 			if ($response){
-
 				$session_array = array('userid'=> $response->result->userId,
 					'token'=>$response->result->accessToken);
 				$session_data = $this->session->set_userdata($session_array);
@@ -67,6 +66,7 @@
 
 
 			$response = $this->sendRequest($resource,'GET','',$this->session->userdata('token'));
+			// echo "<pre>";var_dump($this->session->all_userdata());			die;
 			if ($datatable == 'datatable'){
 				// $result = array();
 				$result['data'] = array();

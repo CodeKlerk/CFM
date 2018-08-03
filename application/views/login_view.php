@@ -41,7 +41,7 @@
 						</div>
 					</div>
 					<div class="col-sm-6">
-						<div class="forgot-password padding-top-10"><a href="<?= baseurl() ?>account/forgot">Forgot Password</a></div>
+						<div class="forgot-password padding-top-10"><a href="<?= base_url() ?>account/forgot">Forgot Password</a></div>
 					</div>
 				</div>
 			</form>

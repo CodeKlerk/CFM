@@ -23,11 +23,11 @@
 								use code for form submit
 								<input class="btn btn-primary btn-lg btn-block" type="submit" value="Submit">
 							-->
-							<a class="btn btn-primary btn-lg btn-block" href="<?= base_url() ?>account/login">Submit</a>
+							<a class="btn btn-primary btn-lg btn-block" href="javascript:;;">Submit</a>
 						</div>
 					</div>
 					<div class="col-sm-6">
-						<div class="forgot-password"><a href="login.php" class="btn btn-outline-primary btn-lg btn-block">Sign In</a></div>
+						<div class="forgot-password"><a href="<?= base_url() ?>account/login" class="btn btn-outline-primary btn-lg btn-block">Sign In</a></div>
 					</div>
 				</div>
 			</form>
