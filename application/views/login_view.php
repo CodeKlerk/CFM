@@ -5,7 +5,6 @@
 </head>
 <body>
 	<div class="container">
-		
 		<div class="row justify-content-center">
 			<div class="col-sm-4 ">
 				<img src="<?=  base_url(); ?>assets/images/cfm-logo-horizontal.png" style="height:100px" alt="login" class="login-img">
@@ -15,8 +14,7 @@
 			<div class="login-box bg-white box-shadow pd-30 border-radius-5">
 				<i class="icon-copy fa fa-chevron-right" aria-hidden="true"></i>
 				<a class="text-center" href="<?=  base_url(); ?>account/create">Register new account</a>
-				<!-- <div class="padding-top-10"><a href="forgot-password.php">Signup</a></div>			<br /> -->
-				<h2 class="text-center mb-30">Login</h2>
+				<h4 class="text-center mb-30">Login</h4>
 				<form id="login-form" action="" method="POST">
 					<div class="input-group custom input-group-lg">
 						<input type="text" class="form-control" placeholder="Username" id="username">
@@ -37,7 +35,7 @@
 								use code for form submit
 								<input class="btn btn-outline-primary btn-lg btn-block" type="submit" value="Sign In">
 							-->
-							<a class="btn btn-outline-primary btn-lg btn-block" href="javascript:;;">Sign In</a>
+							<a class="btn btn-outline-primary btn-lg btn-block" id="submit-btn" href="javascript:;;">Sign In</a>
 						</div>
 					</div>
 					<div class="col-sm-6">
@@ -51,23 +49,34 @@
 <?php $this->load->view('templates/script'); ?>
 <script type="text/javascript">
 	$(function(){
-		$('#login-form').click(function(e){
+		$('#submit-btn').click(function(e){
 			$('#login-form').submit();				
 		});
 		var url = "<?= base_url();?>api/login";
 		$('#login-form').submit(function(e){
-		var username = $('#username').val();
-		var password = $('#password').val();
-		var data ={
-			username: username,
-			password,password
-		} 
+			NProgress.start();
+			var username = $('#username').val();
+			var password = $('#password').val();
+			var data ={
+				username: username,
+				password,password
+			} 
 			console.log('form submitted');
 
+				$.post(url, data, function(result,status){
+				NProgress.done();
 
-			$.post(url, data, function(result){
-				console.log(result);
-			});
+            if (result.error == 'none'){
+            console.log('login succesfull!', '')
+		    // console.log(data);
+		    // window.location = data.redirect;
+                
+            }else{
+            console.log(data.error, '')
+                // Materialize.toast(data.error, 4000);
+            }
+
+        })
 
 			e.preventDefault();
 		});

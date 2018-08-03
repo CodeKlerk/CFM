@@ -10,7 +10,10 @@ class Members extends CI_Controller {
 
 	}
 
-	public function index(){
+	public function index($id = null){
+		$data['pagetitle'] = 'members';
+
+		$view = (isset($member_id)) ? 'member_profile_view' : 'members_view' ;
 		$this->load->view('members_view');
 	}
 

@@ -1,6 +1,6 @@
 	<!-- Basic Page Info -->
 	<meta charset="utf-8">
-	<title>DeskApp Dashboard</title>
+	<title>CFM Web Portal - <?= $pagetitle;?></title>
 
 	<!-- Site favicon -->
 	<!-- <link rel="shortcut icon" href="images/favicon.ico"> -->
@@ -13,6 +13,7 @@
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet">
 	<!-- CSS -->
 	<link rel="stylesheet" href="<?=base_url();?>assets/styles/style.css">
+	<link href="<?=  base_url(); ?>assets/images/favicon.png" rel="shortcut icon">
 
 	<!-- Global site tag (gtag.js) - Google Analytics -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-119386393-1"></script>

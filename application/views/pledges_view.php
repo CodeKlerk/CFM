@@ -208,6 +208,7 @@
                 scrollCollapse: true,
                 autoWidth: false,
                 responsive: true,
+                ajax: '<?= base_url(); ?>api/getpledges/datatable',
                 columnDefs: [{
                     targets: "datatable-nosort",
                     orderable: false,

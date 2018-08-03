@@ -35,19 +35,70 @@
 				$this->userInfo();
 			}
 			else{
-				echo "Connection aborted: Please check your internet connection";
+				$response = array(
+					'message' =>"Connection aborted: Please check your internet connection",
+					'code'=> 5,
+					'redirect'=> base_url().'account/home'
+				);
+				echo json_encode($response);
 			}
+		}
+		public function signup()
+		{
 
+			$resource = 'services/app/Account/Register';
+
+			$fullname = $_POST['fullname'];
+			$surname = $_POST['surname'];
+			$username = $_POST['username'];
+			$email = $_POST['email'];
+			$password = $_POST['password'];
+			
+			$payload = array(
+				'name'=>$fullname,
+				'surname'=>$surname,
+				'userName'=>$username,
+				'emailAddress'=>$email,
+				'password'=>$password,
+				'captchaResponse'=>"string"
+			);
+
+			$response = $this->sendRequest($resource,'POST',$payload);
+			if ($response){
+// $response->success
+				$response = array(
+					'message' =>"Account created succesfully",
+					'code'=> 5,
+					'redirect'=> base_url().'account/login'
+				);
+				echo json_encode($response);
+
+			}
+			else{
+				$response = array(
+					'message' =>"Connection aborted: Please check your internet connection",
+					'code'=> 5,
+					'redirect'=> base_url().'account/login'
+				);
+				echo json_encode($response);
+			}
 		}
 
 		public  function userInfo(){
 
-			$resource ="/api/services/app/Profile/GetCurrentUserProfileForEdit";
+			$resource ="services/app/Profile/GetCurrentUserProfileForEdit";
 
 			$response = $this->sendRequest($resource,'GET','',$this->session->userdata('token'));
-	// var_dump($response);die;
 			if ($response){
 
+				$data['userid'] = $response->result->userId;
+				$data['name'] = $response->result->name;
+				$data['surname'] = $response->result->surname;
+				$data['username'] = $response->result->userName;
+				$data['emailaddress'] = $response->result->emailAddress;
+				$data['phonenumber'] = $response->result->phoneNumber;
+
+				$this->session->set_userdata($data);
 				header('Content-Type: application/json');
 				echo json_encode($response,JSON_PRETTY_PRINT);
 			}
@@ -66,9 +117,7 @@
 
 
 			$response = $this->sendRequest($resource,'GET','',$this->session->userdata('token'));
-			// echo "<pre>";var_dump($this->session->all_userdata());			die;
 			if ($datatable == 'datatable'){
-				// $result = array();
 				$result['data'] = array();
 				foreach ($response->result->items as $key => $item) {
 					$arr = array();
@@ -92,9 +141,7 @@
 
 		public function getPledges($datatable = null){
 
-			$resource ="services/app/MemberPledges/GetAll";
-
-
+			$resource ="services/app/MemberPledges/GetAll?ActiveFilter=1";
 			$response = $this->sendRequest($resource,'GET','',$this->session->userdata('token'));
 			if ($datatable == 'datatable'){
 				// $result = array();
@@ -102,7 +149,16 @@
 				foreach ($response->result->items as $key => $item) {
 					$arr = array();
 
-					$arr = [$item->member->fullName,$item->member->cellphone,$item->member->emailAddress,$item->member->id];
+					$arr = [
+						$item->memberPledge->name,
+						$item->memberPledge->amount,
+						$item->memberPledge->balance,
+						$item->memberPledge->contributed,
+						$this->lookup('roles',null,$item->memberPledge->pledgeStakeId)->displayName,
+						$item->memberPledge->memberId,	
+						$item->memberPledge->initialPayment
+
+					];
 					array_push($result['data'], $arr);
 				}
 				$response = $result;
@@ -152,7 +208,7 @@
 				$session_array = array('userid'=> $response->result->userId,
 					'token'=>$response->result->accessToken);
 				$session_data = $this->session->set_userdata($session_array);
-				$this->userInfo();
+				// $this->userInfo();
 			}
 			else{
 				echo "Connection aborted: Please check your internet connection";
@@ -160,12 +216,56 @@
 
 		}
 
+		public function lookup($object,$json = null,$id = null){
+
+			switch ($object) {
+				
+				case 'stakes':
+				$resource = 'services/app/PledgeStakes/GetAll?MobileAppFilter=1&WebAppFilter=1';
+				break;
+
+				case 'roles':
+				$resource = 'services/app/Role/GetRoles';
+				break;
+
+				case 'organizations':
+				$resource = 'services/app/OrganizationUnit/GetOrganizationUnits';
+				break;
+				
+				case 'relationships':
+				$resource = 'services/app/OrganizationUnit/GetOrganizationUnits';
+				break;
+
+				case 'periods':
+				$resource = 'services/app/OrganizationUnit/GetOrganizationUnits';
+				break;
+
+				case 'paymentmodes':
+				$resource = 'services/app/PaymentModes/GetAll?ActiveFilter=1';
+				break;
 
 
 
-
-
-
+				default:
+				break;
+			}
+			$returnable;
+			// echo $id;
+			$response = $this->sendRequest($resource,'GET','',$this->session->userdata('token'));
+			if($id!==null){
+				foreach ($response->result->items as $key => $value) {
+					$returnable = ($value->id = $id) ? $response->result->items[$key] : $returnable ;
+				}
+			}
+			else{
+				$returnable = $response->result->items;
+			}
+			if($json !== null){
+				header('Content-Type: application/json');
+				echo json_encode($returnable);
+			}
+			return $returnable;
+		}
 
 
 	// API interaction function

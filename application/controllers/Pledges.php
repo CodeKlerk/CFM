@@ -10,8 +10,9 @@ class Pledges extends CI_Controller {
 
 	}
 
-	public function index(){
-		$this->load->view('pledges_view');
+	public function index($id = null){
+		$data['pagetitle'] = 'pledges';
+		$this->load->view('pledges_view',$data);
 	}
 
 }
