@@ -14,5 +14,9 @@ class Pledges extends CI_Controller {
 		$data['pagetitle'] = 'pledges';
 		$this->load->view('pledges_view',$data);
 	}
+	public function create(){
+		$data['pagetitle'] = 'Create Pledge';
+		$this->load->view('create_pledges_view',$data);
+	}
 
 }

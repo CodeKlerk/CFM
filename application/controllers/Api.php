@@ -65,7 +65,63 @@
 
 			$response = $this->sendRequest($resource,'POST',$payload);
 			if ($response){
-// $response->success
+		// $response->success
+				$response = array(
+					'message' =>"Account created succesfully",
+					'code'=> 5,
+					'redirect'=> base_url().'account/login'
+				);
+				echo json_encode($response);
+
+			}
+			else{
+				$response = array(
+					'message' =>"Connection aborted: Please check your internet connection",
+					'code'=> 5,
+					'redirect'=> base_url().'account/login'
+				);
+				echo json_encode($response);
+			}
+		}
+		public function createpledge()
+		{
+
+			$resource = 'services/app/MemberPledges/CreateOrEdit';
+		
+			$paymentperiod;
+			$pledgestake;
+			$pledgeamount;
+			$pledgename;
+			$member;
+			$initialpayment;
+
+			$payload = array(
+				'name'=> $pledgename,
+				'amount'=> $pledgeamount,
+				'datePledged'=> str_replace(' ', 'T', date('Y-m-d H:i:s.000')."Z"),
+				'initialPayment'=> $initialpayment,
+				'contributed'=> 0,
+				'balance'=> $pledgeamount,
+				'active'=> true,
+				'memberId'=> $member,
+				'userId'=> $this->session->userdata('userid'),
+				'pledgeStakeId'=> $pledgestake,
+				'paymentPeriodId'=> $paymentperiod,
+				'isDeleted'=> false,
+				'deleterUserId'=> 0,
+				'deletionTime'=> str_replace(' ', 'T', date('Y-m-d H:i:s.000')."Z"),
+				'lastModificationTime'=> str_replace(' ', 'T', date('Y-m-d H:i:s.000')."Z"),
+				'lastModifierUserId'=> 0,
+				'creationTime'=> str_replace(' ', 'T', date('Y-m-d H:i:s.000')."Z"),
+				'creatorUserId'=> $this->session->userdata('userid'),
+				'id'=> 0
+			);
+			echo "<pre>";
+			var_dump($payload);die;
+
+			$response = $this->sendRequest($resource,'POST',$payload);
+			if ($response){
+		// $response->success
 				$response = array(
 					'message' =>"Account created succesfully",
 					'code'=> 5,
@@ -152,11 +208,24 @@
 					$arr = [
 						$item->memberPledge->name,
 						$item->memberPledge->amount,
+						$item->memberPledge->initialPayment,
 						$item->memberPledge->balance,
 						$item->memberPledge->contributed,
-						$this->lookup('roles',null,$item->memberPledge->pledgeStakeId)->displayName,
-						$item->memberPledge->memberId,	
-						$item->memberPledge->initialPayment
+						$this->lookup('stakes',null,$item->memberPledge->pledgeStakeId)->pledgeStake->name,
+						$this->lookup('members',null,$item->memberPledge->memberId)->member->fullName,	
+						'<div class="dropdown">
+						<a class="btn btn-outline-primary dropdown-toggle" href="'.base_url()."pledges/".$item->memberPledge->id.'" role="button"
+						data-toggle="dropdown">
+						<i class="fa fa-ellipsis-h"></i>
+						</a>
+						<div class="dropdown-menu dropdown-menu-right">
+						<a class="dropdown-item" href="#" data-backdrop="static" data-toggle="modal"
+						data-target="#login-modal"><i class="fa fa-eye"></i> View</a>
+						<a class="dropdown-item" href="etma-pledge-create.php"><i
+						class="fa fa-pencil"></i> Edit</a>
+						<a class="dropdown-item" href="#"><i class="fa fa-trash"></i> Delete</a>
+						</div>
+						</div>'
 
 					];
 					array_push($result['data'], $arr);
@@ -175,50 +244,12 @@
 
 		}
 
-
-		public function CreatePledge()
-		{
-
-			$resource = 'services/app/MemberPledges/CreateOrEdit';
-			$payload = array(
-				'name'=> "Serious pledge",
-				'amount'=> 5000000,
-				'datePledged'=> "2018-07-24T22:33:10.163Z",
-				'initialPayment'=> 0,
-				'contributed'=> 0,
-				'balance'=> 0,
-				'active'=> true,
-				'memberId'=> 3,
-				'userId'=> $this->session->userdata('userId'),
-				'pledgeStakeId'=> 0,
-				'paymentPeriodId'=> 0,
-				'isDeleted'=> true,
-				'deleterUserId'=> 0,
-				'deletionTime'=> "2018-07-23T22:33:10.164Z",
-				'lastModificationTime'=> "2018-07-23T22:33:10.164Z",
-				'lastModifierUserId'=> 0,
-				'creationTime'=> "2018-07-23T22:33:10.164Z",
-				'creatorUserId'=> 0,
-				'id'=> 0
-
-			);
-			$response = $this->sendRequest($resource,'POST',$payload);
-			if ($response){
-
-				$session_array = array('userid'=> $response->result->userId,
-					'token'=>$response->result->accessToken);
-				$session_data = $this->session->set_userdata($session_array);
-				// $this->userInfo();
-			}
-			else{
-				echo "Connection aborted: Please check your internet connection";
-			}
-
-		}
-
 		public function lookup($object,$json = null,$id = null){
 
 			switch ($object) {
+				case 'members':
+				$resource = 'services/app/Members/GetAll';
+				break;
 				
 				case 'stakes':
 				$resource = 'services/app/PledgeStakes/GetAll?MobileAppFilter=1&WebAppFilter=1';
@@ -236,8 +267,8 @@
 				$resource = 'services/app/OrganizationUnit/GetOrganizationUnits';
 				break;
 
-				case 'periods':
-				$resource = 'services/app/OrganizationUnit/GetOrganizationUnits';
+				case 'paymentperiods':
+				$resource = 'services/app/PaymentPeriods/GetAll?ActiveFilter=1&WebPortalFilter=1&MobileAppFilter=1';
 				break;
 
 				case 'paymentmodes':

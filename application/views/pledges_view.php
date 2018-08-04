@@ -17,8 +17,8 @@
                 <div class="page-header">
                     <div class="row" style="margin-bottom: 8px;">
                         <div class="col-md-6 col-sm-12">
-                            
-                           <nav aria-label="breadcrumb" role="navigation">
+
+                         <nav aria-label="breadcrumb" role="navigation">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="index.php">Home</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">Pledges</li>
@@ -26,7 +26,7 @@
                         </nav>
                     </div>
                     <div class="col-md-6 col-sm-12 text-right">
-                        <a class="btn btn-primary" href="etma-pledge-create.php" role="button">
+                        <a class="btn btn-primary" href="<?= base_url()?>pledges/create" role="button">
                             New Pledge
                         </a>
                     </div>
@@ -40,83 +40,16 @@
                             <tr>
                                 <th>Name</th>
                                 <th>Amount</th>
-                                <th>Project</th>
-                                <th>Initial Amount</th>
-                                <th>Amount Contributed</th>
-                                <th>Amount Remaining</th>
+                                <td>Initial Payment</td>
+                                <th>Balance</th>
+                                <th>Contributed</th>
+                                <th>Stake</th>
+                                <th>Member</th>
                                 <th class="datatable-nosort">Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Gloria F. Mead</td>
-                                <td>50,000</td>
-                                <td>Magadi Rd.</td>
-                                <td>10,000</td>
-                                <td>5,000</td>
-                                <td>500</td>
-                                <td>
-                                    <div class="dropdown">
-                                        <a class="btn btn-outline-primary dropdown-toggle" href="#" role="button"
-                                        data-toggle="dropdown">
-                                        <i class="fa fa-ellipsis-h"></i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="#" data-backdrop="static" data-toggle="modal"
-                                        data-target="#login-modal"><i class="fa fa-eye"></i> View</a>
-                                        <a class="dropdown-item" href="etma-pledge-create.php"><i
-                                            class="fa fa-pencil"></i> Edit</a>
-                                            <a class="dropdown-item" href="#"><i class="fa fa-trash"></i> Delete</a>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Andrea J. Cagle</td>
-                                <td>100,000</td>
-                                <td>Magadi Rd.</td>
-                                <td>15,000</td>
-                                <td>2,000</td>
-                                <td>300</td>
-                                <td>
-                                    <div class="dropdown">
-                                        <a class="btn btn-outline-primary dropdown-toggle" href="#" role="button"
-                                        data-toggle="dropdown">
-                                        <i class="fa fa-ellipsis-h"></i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="#" data-backdrop="static" data-toggle="modal"
-                                        data-target="#login-modal"><i class="fa fa-eye"></i> View</a>
-                                        <a class="dropdown-item" href="etma-pledge-create.php"><i
-                                            class="fa fa-pencil"></i> Edit</a>
-                                            <a class="dropdown-item" href="#"><i class="fa fa-trash"></i> Delete</a>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Andrea J. Cagle</td>
-                                <td>45,000</td>
-                                <td>Magadi Rd.</td>
-                                <td>14,000</td>
-                                <td>8,000</td>
-                                <td>4,000</td>
-                                <td>
-                                    <div class="dropdown">
-                                        <a class="btn btn-outline-primary dropdown-toggle" href="#" role="button"
-                                        data-toggle="dropdown">
-                                        <i class="fa fa-ellipsis-h"></i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item" href="#" data-backdrop="static" data-toggle="modal"
-                                        data-target="#login-modal"><i class="fa fa-eye"></i> View</a>
-                                        <a class="dropdown-item" href="etma-pledge-create.php"><i
-                                            class="fa fa-pencil"></i> Edit</a>
-                                            <a class="dropdown-item" href="#"><i class="fa fa-trash"></i> Delete</a>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
+
                         </tbody>
                     </table>
                 </div>
