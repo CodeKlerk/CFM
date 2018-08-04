@@ -85,15 +85,14 @@
 		}
 		public function createpledge()
 		{
-
 			$resource = 'services/app/MemberPledges/CreateOrEdit';
 		
-			$paymentperiod;
-			$pledgestake;
-			$pledgeamount;
-			$pledgename;
-			$member;
-			$initialpayment;
+			$paymentperiod = $_POST['pledgeperiod'];
+			$pledgestake = $_POST['pledgestake'];
+			$pledgeamount = $_POST['pledgeamount'];
+			$pledgename = $_POST['pledgename'];
+			$member = $_POST['pledgemember'];
+			$initialpayment =  $_POST['amount'];
 
 			$payload = array(
 				'name'=> $pledgename,
@@ -114,16 +113,14 @@
 				'lastModifierUserId'=> 0,
 				'creationTime'=> str_replace(' ', 'T', date('Y-m-d H:i:s.000')."Z"),
 				'creatorUserId'=> $this->session->userdata('userid'),
-				'id'=> 0
+				'id'=> null
 			);
-			echo "<pre>";
-			var_dump($payload);die;
+			// echo "<pre>";			echo json_encode($payload);die;
 
-			$response = $this->sendRequest($resource,'POST',$payload);
+			$response = $this->sendRequest($resource,'POST',$payload,$this->session->userdata('token'));
 			if ($response){
-		// $response->success
-				$response = array(
-					'message' =>"Account created succesfully",
+				$resp = array(
+					'message' =>"Pledge created succesfully",
 					'code'=> 5,
 					'redirect'=> base_url().'account/login'
 				);
@@ -131,12 +128,12 @@
 
 			}
 			else{
-				$response = array(
+				$resp = array(
 					'message' =>"Connection aborted: Please check your internet connection",
 					'code'=> 5,
 					'redirect'=> base_url().'account/login'
 				);
-				echo json_encode($response);
+				echo json_encode($resp);
 			}
 		}
 
